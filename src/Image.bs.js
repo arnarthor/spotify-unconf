@@ -3,20 +3,20 @@
 
 var Css = require("bs-css/src/Css.js");
 var React = require("react");
-var ImgJs = require("./img.js");
+var ImageJs = require("./image.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
 
-function make(image, children) {
-  return ReasonReact.wrapJsForReason(ImgJs.imageComponent, {
-              image: image
+function make(imageSrc, children) {
+  return ReasonReact.wrapJsForReason(ImageJs.imageComponent, {
+              imageSrc: imageSrc
             }, children);
 }
 
-var ImgJs$1 = /* module */[/* make */make];
+var ImgJs = /* module */[/* make */make];
 
-var component = ReasonReact.statelessComponent("Img");
+var component = ReasonReact.statelessComponent("Image");
 
-function make$1(image, _) {
+function make$1(imageSrc, _) {
   return /* record */[
           /* debugName */component[/* debugName */0],
           /* reactClassInternal */component[/* reactClassInternal */1],
@@ -36,7 +36,7 @@ function make$1(image, _) {
                                   /* [] */0
                                 ]
                               ])
-                        }, ReasonReact.element(undefined, undefined, make(image, /* array */[])));
+                        }, ReasonReact.element(undefined, undefined, make(imageSrc, /* array */[])));
             }),
           /* initialState */component[/* initialState */10],
           /* retainedProps */component[/* retainedProps */11],
@@ -45,7 +45,7 @@ function make$1(image, _) {
         ];
 }
 
-exports.ImgJs = ImgJs$1;
+exports.ImgJs = ImgJs;
 exports.component = component;
 exports.make = make$1;
 /* component Not a pure module */

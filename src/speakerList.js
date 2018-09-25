@@ -7,7 +7,7 @@ export default [
   },
   {
     name: 'Arnar Thor',
-    talk: 'Writing React in Reason',
+    talk: 'Reasonable React',
     image:
       'https://communityfund.imgix.net/b5614162-0b9b-473d-ab4f-96f8bdf59d50.png?fit=crop&w=500&h=500'
   },

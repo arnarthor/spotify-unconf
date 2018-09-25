@@ -2,30 +2,13 @@
 'use strict';
 
 var Css = require("bs-css/src/Css.js");
-var Img = require("./Img.bs.js");
-var List = require("bs-platform/lib/js/list.js");
-var $$Array = require("bs-platform/lib/js/array.js");
 var Block = require("bs-platform/lib/js/block.js");
 var Curry = require("bs-platform/lib/js/curry.js");
+var Image = require("./Image.bs.js");
 var React = require("react");
-var Belt_List = require("bs-platform/lib/js/belt_List.js");
+var Belt_Array = require("bs-platform/lib/js/belt_Array.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
-var MeetupFoodJs = require("./meetupFood.js");
 var MeetupInformationJs = require("./MeetupInformation.js");
-
-function foodToJs(param) {
-  return {
-          food: param[/* food */0],
-          beverages: param[/* beverages */1]
-        };
-}
-
-function foodFromJs(param) {
-  return /* record */[
-          /* food */param.food,
-          /* beverages */param.beverages
-        ];
-}
 
 function infoToJs(param) {
   return {
@@ -43,8 +26,6 @@ function infoFromJs(param) {
         ];
 }
 
-var component = ReasonReact.reducerComponent("Speakers");
-
 function speakerToJs(param) {
   return {
           name: param[/* name */0],
@@ -60,6 +41,8 @@ function speakerFromJs(param) {
           /* image */param.image
         ];
 }
+
+var component = ReasonReact.reducerComponent("Speakers");
 
 function make(speakers, _) {
   var renderSpeaker = function (param) {
@@ -107,7 +90,7 @@ function make(speakers, _) {
                           Css.margin(Css.px(5)),
                           /* [] */0
                         ])
-                  }, ReasonReact.element(undefined, undefined, Img.make(param[/* image */2], /* array */[]))));
+                  }, ReasonReact.element(undefined, undefined, Image.make(param[/* image */2], /* array */[]))));
   };
   return /* record */[
           /* debugName */component[/* debugName */0],
@@ -122,7 +105,6 @@ function make(speakers, _) {
           /* render */(function (param) {
               var send = param[/* send */3];
               var match = infoFromJs(MeetupInformationJs.default());
-              var match$1 = foodFromJs(MeetupFoodJs());
               return React.createElement("div", {
                           className: Css.style(/* :: */[
                                 Css.display(/* flex */-1010954439),
@@ -179,17 +161,7 @@ function make(speakers, _) {
                                         Css.margin(Css.px(5)),
                                         /* [] */0
                                       ])
-                                }, "Location: ", React.createElement("strong", undefined, match[/* location */2])), React.createElement("div", {
-                                  className: Css.style(/* :: */[
-                                        Css.margin(Css.px(5)),
-                                        /* [] */0
-                                      ])
-                                }, "Food: ", React.createElement("strong", undefined, match$1[/* food */0])), React.createElement("div", {
-                                  className: Css.style(/* :: */[
-                                        Css.margin(Css.px(5)),
-                                        /* [] */0
-                                      ])
-                                }, "Beverages: ", React.createElement("strong", undefined, match$1[/* beverages */1].join(", ")))), Belt_List.toArray(Belt_List.map(speakers, renderSpeaker)));
+                                }, "Location: ", React.createElement("strong", undefined, match[/* location */2]))), Belt_Array.map(speakers, renderSpeaker));
             }),
           /* initialState */(function () {
               return /* record */[/* attendees */0];
@@ -207,17 +179,15 @@ function make(speakers, _) {
 }
 
 var $$default = ReasonReact.wrapReasonForJs(component, (function (jsProps) {
-        var speakers = List.map(speakerFromJs, $$Array.to_list(jsProps.speakers));
+        var speakers = Belt_Array.map(jsProps.speakers, speakerFromJs);
         return make(speakers, /* array */[]);
       }));
 
-exports.foodToJs = foodToJs;
-exports.foodFromJs = foodFromJs;
 exports.infoToJs = infoToJs;
 exports.infoFromJs = infoFromJs;
-exports.component = component;
 exports.speakerToJs = speakerToJs;
 exports.speakerFromJs = speakerFromJs;
+exports.component = component;
 exports.make = make;
 exports.$$default = $$default;
 exports.default = $$default;

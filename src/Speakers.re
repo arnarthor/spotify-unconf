@@ -1,11 +1,5 @@
+open Belt;
 open Css;
-[@bs.deriving {jsConverter: newType}]
-type food = {
-  food: string,
-  beverages: array(string),
-};
-
-[@bs.module] external meetupFood: unit => abs_food = "./meetupFood.js";
 
 [@bs.deriving {jsConverter: newType}]
 type info = {
@@ -17,13 +11,6 @@ type info = {
 [@bs.module "./MeetupInformation.js"]
 external meetupInfo: unit => abs_info = "default";
 
-type state = {attendees: int};
-type action =
-  | AddAttendee
-  | SubtractAttendee;
-
-let component = ReasonReact.reducerComponent(__MODULE__);
-
 [@bs.deriving jsConverter]
 type speaker = {
   name: string,
@@ -33,7 +20,14 @@ type speaker = {
 
 type speakersList = list(speaker);
 
-let make = (speakers, _children) => {
+type state = {attendees: int};
+type action =
+  | AddAttendee
+  | SubtractAttendee;
+
+let component = ReasonReact.reducerComponent(__MODULE__);
+
+let make = (~speakers, _children) => {
   let renderSpeaker = ({name, talk, image}) =>
     <div
       className={
@@ -57,7 +51,9 @@ let make = (speakers, _children) => {
         {ReasonReact.string("Talk: ")}
         <strong> {ReasonReact.string(talk)} </strong>
       </div>
-      <div className={style([margin(px(5))])}> <Img image /> </div>
+      <div className={style([margin(px(5))])}>
+        <Image imageSrc=image />
+      </div>
     </div>;
   {
     ...component,
@@ -70,7 +66,6 @@ let make = (speakers, _children) => {
       },
     render: ({state, send}) => {
       let {date, time, location} = infoFromJs(meetupInfo());
-      let {food, beverages} = foodFromJs(meetupFood());
       <div
         className={
           style([
@@ -109,22 +104,8 @@ let make = (speakers, _children) => {
             {ReasonReact.string("Location: ")}
             <strong> {ReasonReact.string(location)} </strong>
           </div>
-          <div className={style([margin(px(5))])}>
-            {ReasonReact.string("Food: ")}
-            <strong> {ReasonReact.string(food)} </strong>
-          </div>
-          <div className={style([margin(px(5))])}>
-            {ReasonReact.string("Beverages: ")}
-            <strong>
-              {ReasonReact.string(beverages |> Js.Array.joinWith(", "))}
-            </strong>
-          </div>
         </div>
-        {
-          Belt.List.map(speakers, renderSpeaker)
-          |> Belt.List.toArray
-          |> ReasonReact.array
-        }
+        {Array.map(speakers, renderSpeaker) |> ReasonReact.array}
       </div>;
     },
   };
@@ -134,8 +115,7 @@ let default =
   ReasonReact.wrapReasonForJs(
     ~component,
     jsProps => {
-      let speakers =
-        jsProps##speakers |> Array.to_list |> List.map(speakerFromJs);
-      make(speakers, [||]);
+      let speakers = jsProps##speakers->(Array.map(speakerFromJs));
+      make(~speakers, [||]);
     },
   );

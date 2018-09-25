@@ -1,11 +1,11 @@
 module ImgJs = {
-  [@bs.module "./img.js"]
+  [@bs.module "./image.js"]
   external reactClass: ReasonReact.reactClass = "imageComponent";
 
-  let make = (~image, children) =>
+  let make = (~imageSrc, children) =>
     ReasonReact.wrapJsForReason(
       ~reactClass,
-      ~props={"image": image},
+      ~props={"imageSrc": imageSrc},
       children,
     );
 };
@@ -14,10 +14,10 @@ open Css;
 
 let component = ReasonReact.statelessComponent(__MODULE__);
 
-let make = (~image, _children) => {
+let make = (~imageSrc, _children) => {
   ...component,
   render: _ =>
     <div className={style([height(px(300)), width(px(300))])}>
-      <ImgJs image />
+      <ImgJs imageSrc />
     </div>,
 };
